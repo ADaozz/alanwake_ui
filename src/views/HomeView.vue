@@ -14,6 +14,11 @@ const themeStore = useThemeStore();
 const { toneClass } = storeToRefs(themeStore);
 
 const heroVideo = "/video/Alan-Wake-2_lakehouse_trailer_website_1080p_H264.mp4";
+const manuscriptLines = [
+  "The repository was not opened. It was found.",
+  "A commit flickered like a page under a lamp. The lake kept the older draft beneath the surface.",
+  "Every tool asked for permission before it crossed the threshold. Every interface left a trace in the dark.",
+];
 const references = [
   {
     name: "Federal Bureau of Control",
@@ -47,6 +52,9 @@ interface ProjectCard {
   note: string;
   href: string;
   meta: string;
+  status: string;
+  signal: string;
+  risk: string;
 }
 
 const fallbackProjects: ProjectCard[] = [
@@ -56,6 +64,9 @@ const fallbackProjects: ProjectCard[] = [
     note: "AI Agent tool authorization framework for local tools and remote MCP tools.",
     href: "https://github.com/ADaozz/mcp-authz",
     meta: "MIT / updated Apr 22, 2026",
+    status: "ACTIVE",
+    signal: "CONTROLLED",
+    risk: "LOW",
   },
   {
     code: "REPO-02",
@@ -63,6 +74,9 @@ const fallbackProjects: ProjectCard[] = [
     note: "A real multi-agent parallel demo based on create_deep_agent.",
     href: "https://github.com/ADaozz/deep_agent_v1",
     meta: "Agent demo / updated Apr 21, 2026",
+    status: "OBSERVED",
+    signal: "UNSTABLE",
+    risk: "MEDIUM",
   },
   {
     code: "REPO-03",
@@ -70,6 +84,9 @@ const fallbackProjects: ProjectCard[] = [
     note: "Early public repository record from the archive.",
     href: "https://github.com/ADaozz/mygit",
     meta: "Archive / created Feb 13, 2023",
+    status: "ARCHIVED",
+    signal: "DORMANT",
+    risk: "LOW",
   },
   {
     code: "REPO-04",
@@ -77,6 +94,9 @@ const fallbackProjects: ProjectCard[] = [
     note: "This portfolio interface: Vue 3, cinematic layout, SVG vein motion, evidence-board project display.",
     href: "https://github.com/ADaozz",
     meta: "Portfolio case / current build",
+    status: "OPEN",
+    signal: "VISIBLE",
+    risk: "LOW",
   },
 ];
 
@@ -100,6 +120,7 @@ function formatRepoDate(value: string) {
 function mapRepoToProject(repo: GitHubRepo, index: number): ProjectCard {
   const language = repo.language ?? "Code";
   const license = repo.license?.spdx_id && repo.license.spdx_id !== "NOASSERTION" ? repo.license.spdx_id : "Public";
+  const isRecent = Date.now() - new Date(repo.updated_at).getTime() < 1000 * 60 * 60 * 24 * 14;
 
   return {
     code: `REPO-${String(index + 1).padStart(2, "0")}`,
@@ -107,6 +128,9 @@ function mapRepoToProject(repo: GitHubRepo, index: number): ProjectCard {
     note: repo.description ?? "Public GitHub repository from ADaozz.",
     href: repo.html_url,
     meta: `${language} / ${license} / updated ${formatRepoDate(repo.updated_at)}`,
+    status: isRecent ? "ACTIVE" : "ARCHIVED",
+    signal: repo.description ? "READABLE" : "PARTIAL",
+    risk: license === "Public" ? "UNKNOWN" : "LOW",
   };
 }
 
@@ -128,6 +152,12 @@ function getEvidenceStyle(index: number) {
     left: position.left,
     "--rotate": position.rotate,
   };
+}
+
+function getEvidenceVariant(index: number) {
+  const variants = ["sticky-note", "polaroid", "type-page", "title-strip"];
+
+  return variants[index % variants.length];
 }
 
 async function loadRepos() {
@@ -209,9 +239,9 @@ onUnmounted(() => {
         <div class="hero-shadow" aria-hidden="true" />
 
         <div class="hero-copy page-shell">
-          <p class="ui-kicker">GitHub Archive / ADaozz</p>
+          <p class="ui-kicker">Dark Place Archive / ADaozz</p>
           <h1 id="hero-title" class="hero-title">ADaozz</h1>
-          <p class="hero-line">Building AI agent tooling, authorization systems, and atmospheric frontend interfaces</p>
+          <p class="hero-line">A public GitHub trace observed somewhere between Cauldron Lake, the Dark Place, and an FBC case terminal</p>
 
           <div class="hero-actions" aria-label="Primary actions">
             <BaseButton tone="danger" @click="themeStore.setTone('blood')">View Work</BaseButton>
@@ -227,17 +257,35 @@ onUnmounted(() => {
 
       <section id="profile" class="profile-band">
         <div class="page-shell profile-layout">
-          <div class="profile-heading">
-            <p class="ui-kicker">Profile</p>
-            <h2 class="section-title">Agent systems, tool control, and interface atmosphere</h2>
+          <div class="personnel-heading">
+            <p class="ui-kicker">FBC Personnel File</p>
+            <h2 class="section-title">Subject ADaozz</h2>
+            <span class="file-stamp">PUBLIC ACCESS NODE / ACTIVE OBSERVATION</span>
+            <p class="threshold-note">Threshold contact: Cauldron Lake signal / Dark Place narrative residue</p>
           </div>
 
-          <div class="profile-copy">
-            <p class="body-copy">
-              I build experiments around AI agents, tool governance, and frontend presentation systems
-            </p>
-            <p class="body-copy">
-              This homepage treats the GitHub profile as a case board: repositories become evidence, activity becomes trace, and projects remain directly reachable
+          <div class="personnel-file">
+            <dl class="file-grid">
+              <div>
+                <dt>Clearance</dt>
+                <dd>Public / External Review</dd>
+              </div>
+              <div>
+                <dt>Role</dt>
+                <dd>Frontend systems / AI agent tooling</dd>
+              </div>
+              <div>
+                <dt>Observed Specialization</dt>
+                <dd>Tool authorization, narrative interfaces, evidence-board UI</dd>
+              </div>
+              <div>
+                <dt>Known Tools</dt>
+                <dd>Vue 3, TypeScript, Vite, Pinia, GitHub API</dd>
+              </div>
+            </dl>
+
+            <p class="file-note">
+              Subject maintains a public repository trace. Current page reframes those records as case evidence for controlled review and continued observation
             </p>
           </div>
         </div>
@@ -245,7 +293,7 @@ onUnmounted(() => {
 
       <section id="work" class="work-band page-shell">
         <div class="work-meta">
-          <p class="ui-kicker">Selected Work</p>
+          <p class="ui-kicker">Case Board / Manuscript Trace</p>
           <h2 class="section-title">Repositories pinned to the board</h2>
           <p class="repo-status">
             <span v-if="isLoadingRepos">Syncing GitHub evidence</span>
@@ -253,6 +301,23 @@ onUnmounted(() => {
             <span v-else>Live feed from github.com/ADaozz</span>
           </p>
         </div>
+
+        <article class="manuscript-page" aria-label="Manuscript page">
+          <div class="manuscript-light" aria-hidden="true" />
+          <div class="manuscript-header">
+            <span class="manuscript-tag">Return Draft</span>
+            <span class="manuscript-stamp">Recovered</span>
+          </div>
+          <p class="manuscript-kicker">Manuscript Page / Recovered Draft</p>
+          <div class="manuscript-body">
+            <p v-for="line in manuscriptLines" :key="line">{{ line }}</p>
+          </div>
+          <div class="manuscript-redactions" aria-hidden="true">
+            <span />
+            <span />
+          </div>
+          <p class="manuscript-signature">A. Wake?</p>
+        </article>
 
         <EvidenceBoard>
           <div class="case-lines" aria-hidden="true">
@@ -269,6 +334,7 @@ onUnmounted(() => {
               v-for="(project, index) in projects"
               :key="project.code"
               class="project-link"
+              :class="`project-link--${getEvidenceVariant(index)}`"
               :style="getEvidenceStyle(index)"
               :href="project.href"
               target="_blank"
@@ -276,6 +342,23 @@ onUnmounted(() => {
             >
               <span class="push-pin" aria-hidden="true" />
               <EvidenceCard :code="project.code" :title="project.title" :note="project.note">
+                <div class="photo-frame" aria-hidden="true">
+                  <span>{{ project.title.slice(0, 2).toUpperCase() }}</span>
+                </div>
+                <dl class="evidence-status">
+                  <div>
+                    <dt>Status</dt>
+                    <dd>{{ project.status }}</dd>
+                  </div>
+                  <div>
+                    <dt>Signal</dt>
+                    <dd>{{ project.signal }}</dd>
+                  </div>
+                  <div>
+                    <dt>Risk</dt>
+                    <dd>{{ project.risk }}</dd>
+                  </div>
+                </dl>
                 <span class="project-meta">{{ project.meta }}</span>
               </EvidenceCard>
             </a>
@@ -500,16 +583,104 @@ onUnmounted(() => {
 
 .profile-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 440px) minmax(0, 640px);
+  grid-template-columns: minmax(260px, 420px) minmax(0, 760px);
   gap: var(--space-9);
   padding: var(--space-9) 0;
 }
 
-.profile-heading,
-.profile-copy,
+.personnel-heading,
+.personnel-file,
 .work-meta {
   display: grid;
   gap: var(--space-5);
+}
+
+.file-stamp {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 24px;
+  padding: 0 10px 0 26px;
+  border: 1px solid rgba(151, 172, 159, 0.14);
+  background:
+    linear-gradient(90deg, rgba(128, 18, 18, 0.24), transparent 34%),
+    rgba(151, 172, 159, 0.025);
+  color: rgba(151, 172, 159, 0.76);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.file-stamp::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 16px;
+  background: rgba(128, 18, 18, 0.62);
+}
+
+.file-stamp::after {
+  content: "FBC";
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 7px;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.threshold-note {
+  margin: calc(var(--space-3) * -1) 0 0;
+  color: rgba(151, 172, 159, 0.56);
+  font-family: var(--font-evidence);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.personnel-file {
+  padding: var(--space-5) 0;
+  border-top: 1px solid rgba(151, 172, 159, 0.16);
+  border-bottom: 1px solid rgba(151, 172, 159, 0.1);
+}
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-7);
+  margin: 0;
+}
+
+.file-grid div {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.file-grid dt {
+  color: #66706b;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.file-grid dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-evidence);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.file-note {
+  margin: var(--space-6) 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.8;
 }
 
 .repo-status {
@@ -519,14 +690,135 @@ onUnmounted(() => {
   font-size: 13px;
 }
 
-.profile-copy {
-  align-content: start;
-}
-
 .work-band {
   display: grid;
   gap: var(--space-7);
   padding: var(--space-9) 0;
+}
+
+.manuscript-page {
+  position: relative;
+  width: min(680px, 100%);
+  justify-self: center;
+  min-height: 320px;
+  padding: var(--space-6) var(--space-7);
+  background:
+    radial-gradient(circle at 42% 16%, rgba(236, 182, 104, 0.22), transparent 26%),
+    linear-gradient(112deg, rgba(255, 244, 218, 0.08), transparent 36%),
+    repeating-linear-gradient(0deg, rgba(44, 34, 24, 0.025) 0 1px, transparent 1px 5px),
+    #bfb59f;
+  color: #211d17;
+  font-family: var(--font-evidence);
+  transform: rotate(-1deg);
+  box-shadow:
+    0 16px 46px rgba(0, 0, 0, 0.36),
+    inset 0 0 0 1px rgba(35, 31, 26, 0.13),
+    inset 0 0 42px rgba(52, 38, 24, 0.14);
+}
+
+.manuscript-page::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-4);
+  pointer-events: none;
+  border: 1px solid rgba(35, 31, 26, 0.1);
+  background:
+    radial-gradient(circle at 12% 22%, rgba(72, 49, 32, 0.08), transparent 12%),
+    radial-gradient(circle at 78% 72%, rgba(72, 49, 32, 0.06), transparent 10%);
+  opacity: 0.76;
+}
+
+.manuscript-light {
+  position: absolute;
+  top: -20%;
+  left: 30%;
+  width: 220px;
+  height: 220px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(228, 164, 82, 0.28), transparent 66%);
+  mix-blend-mode: multiply;
+}
+
+.manuscript-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.manuscript-tag,
+.manuscript-stamp {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.manuscript-tag {
+  color: rgba(35, 31, 26, 0.58);
+}
+
+.manuscript-stamp {
+  padding: 3px 7px;
+  border: 1px solid rgba(100, 16, 14, 0.38);
+  color: rgba(92, 15, 14, 0.68);
+  transform: rotate(2deg);
+}
+
+.manuscript-kicker {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 var(--space-5);
+  color: rgba(35, 31, 26, 0.48);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.manuscript-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-3);
+  width: min(520px, 100%);
+}
+
+.manuscript-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.72;
+}
+
+.manuscript-redactions {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 6px;
+  width: 190px;
+  margin-top: var(--space-6);
+}
+
+.manuscript-redactions span {
+  height: 7px;
+  background: rgba(31, 27, 22, 0.78);
+}
+
+.manuscript-redactions span:last-child {
+  width: 66%;
+}
+
+.manuscript-signature {
+  position: absolute;
+  right: var(--space-7);
+  bottom: var(--space-5);
+  margin: 0;
+  color: rgba(60, 43, 31, 0.54);
+  font-family: var(--font-note);
+  font-size: 24px;
+  transform: rotate(-4deg);
 }
 
 .project-cluster {
@@ -562,10 +854,111 @@ onUnmounted(() => {
     #d8d1bf;
 }
 
-.project-link:nth-child(2n) :deep(.evidence-card) {
+.project-link--sticky-note {
+  width: min(245px, 26vw);
+}
+
+.project-link--sticky-note :deep(.evidence-card) {
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 36%),
-    #cfc8b7;
+    linear-gradient(155deg, rgba(255, 255, 255, 0.18), transparent 42%),
+    #c9cfaa;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.2),
+    inset 0 -18px 34px rgba(95, 80, 34, 0.08);
+}
+
+.project-link--polaroid {
+  width: min(238px, 25vw);
+}
+
+.project-link--polaroid :deep(.evidence-card) {
+  padding: 12px 12px 26px;
+  background: #ded8ca;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.project-link--type-page {
+  width: min(280px, 30vw);
+}
+
+.project-link--type-page :deep(.evidence-card) {
+  background:
+    repeating-linear-gradient(0deg, rgba(35, 31, 26, 0.045) 0 1px, transparent 1px 22px),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), transparent 36%),
+    #d8d1bf;
+}
+
+.project-link--title-strip {
+  width: min(300px, 31vw);
+}
+
+.project-link--title-strip :deep(.evidence-card) {
+  min-height: 150px;
+  padding: 16px;
+  background:
+    linear-gradient(90deg, rgba(128, 18, 18, 0.12), transparent 34%),
+    #c8c2b2;
+}
+
+.project-link--title-strip :deep(.evidence-card__title) {
+  display: inline;
+  padding: 2px 6px;
+  background: rgba(35, 31, 26, 0.78);
+  color: #d8d1bf;
+}
+
+.photo-frame {
+  display: none;
+}
+
+.project-link--polaroid .photo-frame {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.18;
+  margin-bottom: var(--space-3);
+  background:
+    radial-gradient(circle at 42% 38%, rgba(151, 172, 159, 0.45), transparent 28%),
+    linear-gradient(135deg, rgba(20, 28, 25, 0.94), rgba(3, 5, 5, 0.98));
+  border: 1px solid rgba(35, 31, 26, 0.18);
+  color: rgba(216, 209, 191, 0.64);
+  font-family: var(--font-display);
+  font-size: 54px;
+  line-height: 1;
+}
+
+.project-link--polaroid :deep(.evidence-card__note) {
+  display: none;
+}
+
+.evidence-status {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(35, 31, 26, 0.18);
+}
+
+.evidence-status div {
+  display: grid;
+  gap: 2px;
+}
+
+.evidence-status dt {
+  color: rgba(35, 31, 26, 0.5);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.evidence-status dd {
+  margin: 0;
+  color: #231f1a;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .push-pin {
@@ -937,10 +1330,56 @@ onUnmounted(() => {
     font-size: 78px;
   }
 
+  .hero-line {
+    max-width: 320px;
+    font-size: 15px;
+  }
+
+  .hero-edge {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+    bottom: var(--space-5);
+  }
+
   .profile-layout {
     grid-template-columns: 1fr;
     gap: var(--space-6);
     padding: var(--space-8) 0;
+  }
+
+  .personnel-heading {
+    gap: var(--space-4);
+  }
+
+  .file-stamp {
+    max-width: 100%;
+    font-size: 9px;
+    white-space: normal;
+  }
+
+  .file-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-band {
+    padding: var(--space-8) 0;
+  }
+
+  .manuscript-page {
+    min-height: 0;
+    padding: var(--space-6) var(--space-5);
+    transform: none;
+  }
+
+  .manuscript-body p {
+    font-size: 14px;
+  }
+
+  .manuscript-signature {
+    position: static;
+    margin-top: var(--space-5);
+    text-align: right;
   }
 
   .project-cluster {
@@ -959,6 +1398,25 @@ onUnmounted(() => {
     transform: none;
   }
 
+  .project-link--sticky-note,
+  .project-link--polaroid,
+  .project-link--type-page,
+  .project-link--title-strip {
+    width: 100%;
+  }
+
+  .project-link :deep(.evidence-card) {
+    min-height: auto;
+  }
+
+  .project-link--polaroid :deep(.evidence-card) {
+    padding-bottom: 18px;
+  }
+
+  .project-link--polaroid .photo-frame {
+    max-height: 180px;
+  }
+
   .project-link:hover {
     transform: translateY(-2px);
   }
@@ -969,8 +1427,14 @@ onUnmounted(() => {
 
   .contact-inner,
   .credits-inner {
+    grid-template-columns: 1fr;
     align-items: flex-start;
-    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .credits-shell {
+    gap: var(--space-6);
+    padding: var(--space-7) 0;
   }
 
   .credits-copy {
@@ -989,6 +1453,8 @@ onUnmounted(() => {
   .reference-item {
     grid-template-columns: 72px minmax(0, 1fr);
     gap: var(--space-4);
+    min-height: 104px;
+    padding: var(--space-4) 0;
     width: 100%;
   }
 
