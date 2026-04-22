@@ -1,0 +1,42 @@
+:root {
+  --font-display: "Anton", "Bebas Neue", "Compacta", sans-serif;
+  --font-ui: "Inter Tight", "Roboto Condensed", "IBM Plex Sans Condensed", "Aktiv Grotesk Condensed", sans-serif;
+  --font-evidence: "Courier Prime", "Special Elite", "Prestige 12 Pitch", monospace;
+  --font-note: "Caveat", "Feltpen", cursive;
+
+  --bg-base: #0b0f0e;
+  --bg-elevated: #121716;
+  --surface-1: #161c1a;
+  --surface-2: #1b2320;
+
+  --text-primary: #d6d9d7;
+  --text-secondary: #8b918e;
+  --text-muted: #66706b;
+  --title-tint: #9fa8a3;
+  --line-subtle: rgba(255, 255, 255, 0.06);
+
+  --tone-green: rgba(91, 131, 111, 0.12);
+  --tone-red: rgba(128, 18, 18, 0.16);
+  --tone-blue: rgba(80, 101, 124, 0.12);
+  --tone-fog: rgba(210, 220, 220, 0.05);
+  --vein-color: rgba(180, 20, 30, 0.88);
+  --vein-color-hot: rgba(214, 44, 54, 0.94);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --dur-fast: 180ms;
+  --dur-mid: 260ms;
+  --dur-slow: 420ms;
+}

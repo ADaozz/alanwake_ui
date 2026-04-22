@@ -1,0 +1,10 @@
+node_modules
+dist
+*.log
+.DS_Store
+.codex
+public/img/*.docx
+*.tsbuildinfo
+*.d.ts
+*.js
+*.js.map

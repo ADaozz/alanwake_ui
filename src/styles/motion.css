@@ -1,0 +1,39 @@
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--dur-mid) ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slow-rise-enter-active,
+.slow-rise-leave-active {
+  transition: opacity var(--dur-slow) ease, transform var(--dur-slow) ease;
+}
+
+.slow-rise-enter-from,
+.slow-rise-leave-to {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.ambient-flicker {
+  animation: ambient-flicker 8s linear infinite alternate;
+}
+
+@keyframes ambient-flicker {
+  0% {
+    opacity: 0.12;
+  }
+  45% {
+    opacity: 0.16;
+  }
+  55% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.14;
+  }
+}
