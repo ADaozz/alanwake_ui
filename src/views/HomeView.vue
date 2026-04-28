@@ -830,8 +830,8 @@ onUnmounted(() => {
 .project-link {
   position: absolute;
   display: block;
-  width: min(260px, 28vw);
-  min-width: 210px;
+  width: min(240px, 26vw);
+  min-width: 190px;
   color: inherit;
   transform: rotate(var(--rotate));
   transform-origin: 50% 18px;
@@ -847,15 +847,15 @@ onUnmounted(() => {
 }
 
 .project-link :deep(.evidence-card) {
-  min-height: 184px;
-  padding-top: 20px;
+  min-height: 170px;
+  padding-top: 16px;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 38%),
     #d8d1bf;
 }
 
 .project-link--sticky-note {
-  width: min(245px, 26vw);
+  width: min(228px, 24vw);
 }
 
 .project-link--sticky-note :deep(.evidence-card) {
@@ -868,17 +868,17 @@ onUnmounted(() => {
 }
 
 .project-link--polaroid {
-  width: min(238px, 25vw);
+  width: min(220px, 23vw);
 }
 
 .project-link--polaroid :deep(.evidence-card) {
-  padding: 12px 12px 26px;
+  padding: 10px 10px 22px;
   background: #ded8ca;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
 }
 
 .project-link--type-page {
-  width: min(280px, 30vw);
+  width: min(258px, 28vw);
 }
 
 .project-link--type-page :deep(.evidence-card) {
@@ -889,12 +889,12 @@ onUnmounted(() => {
 }
 
 .project-link--title-strip {
-  width: min(300px, 31vw);
+  width: min(276px, 29vw);
 }
 
 .project-link--title-strip :deep(.evidence-card) {
-  min-height: 150px;
-  padding: 16px;
+  min-height: 138px;
+  padding: 14px;
   background:
     linear-gradient(90deg, rgba(128, 18, 18, 0.12), transparent 34%),
     #c8c2b2;
@@ -922,7 +922,7 @@ onUnmounted(() => {
   border: 1px solid rgba(35, 31, 26, 0.18);
   color: rgba(216, 209, 191, 0.64);
   font-family: var(--font-display);
-  font-size: 54px;
+  font-size: 48px;
   line-height: 1;
 }
 
